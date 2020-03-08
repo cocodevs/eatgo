@@ -1,13 +1,13 @@
 package com.dadongs.eatgo.interfaces;
 
 import com.dadongs.eatgo.application.RestaurantService;
-import com.dadongs.eatgo.domain.*;
+import com.dadongs.eatgo.domain.MenuItem;
+import com.dadongs.eatgo.domain.Restaurant;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,9 +19,9 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class)
@@ -87,10 +87,19 @@ class RestaurantControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"BeRyong\",\"address\":\"Busan\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("location", "/restaurants/1234"))
+                //.andExpect(header().string("location", "/restaurants/1234"))
                 .andExpect(content().string("{}"));
 
         //verify(restaurantService).addRestaurant(restaurant);
         verify(restaurantService).addRestaurant(any()); //아무 객체나 통과
+    }
+
+    @Test
+    public void update() throws Exception {
+        mvc.perform(patch("/restaurants/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"HomeBob\",\"address\":\"Busan\"}"))
+                .andExpect(status().isOk());
+        verify(restaurantService).updateRestaurant(1L, "HomeBob", "Busan");
     }
 }

@@ -1,13 +1,22 @@
 package com.dadongs.eatgo.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Restaurant {
 
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
     private String address;
+
+    @Transient
     private List<MenuItem> menuItems = new ArrayList<>();
 
     public Restaurant(String name, String address) {
@@ -30,8 +39,17 @@ public class Restaurant {
     public  Long getId(){
         return id;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName(){
         return name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getAddress(){
