@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -36,7 +37,12 @@ class RestaurantControllerTest {
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant(1004L, "Bob Zip", "Seoul"));
+        restaurants.add(Restaurant.builder()
+                .id(1004L)
+                .name("Bob Zip")
+                .address("Seoul")
+                .build());
+
         given(restaurantService.getRestaurants()).willReturn(restaurants);
 
         mvc.perform(get("/restaurants"))
@@ -51,11 +57,22 @@ class RestaurantControllerTest {
 
     @Test
     public void detail() throws Exception {
-        Restaurant restaurant1 = new Restaurant(1004L, "Bob Zip", "Seoul");
-        restaurant1.addMenuItem(new MenuItem("Kimchi"));
+        Restaurant restaurant1 = Restaurant.builder()
+                .id(1004L)
+                .name("Bob Zip")
+                .address("Seoul")
+                .build();
+        MenuItem menuItem = MenuItem.builder()
+                .name("Kimchi")
+                .build();
+        restaurant1.setMenuItems(Arrays.asList(menuItem));
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
 
-        Restaurant restaurant2 = new Restaurant(2020L, "Cyber Food", "Seoul");
+        Restaurant restaurant2 = Restaurant.builder()
+                .id(2020L)
+                .name("Cyber Food")
+                .address("Seoul")
+                .build();
         given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
 
         mvc.perform(get("/restaurants/1004"))

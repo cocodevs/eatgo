@@ -40,8 +40,7 @@ public class RestaurantService {
     @Transactional
     public Restaurant updateRestaurant(long id, String name, String address) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-        restaurant.setName(name);
-        restaurant.setAddress(address);
+        restaurant.updateInformation(name, address);
         return restaurant;
     }
 }

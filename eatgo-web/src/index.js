@@ -13,5 +13,4 @@
             </p>
         `).join('')}
     `;
-    //JSON.stringify(restaurants);
 })();

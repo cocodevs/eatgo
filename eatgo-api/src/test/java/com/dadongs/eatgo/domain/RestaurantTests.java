@@ -9,7 +9,11 @@ class RestaurantTests {
 
     @Test
     public void creation(){
-        Restaurant restaurant = new Restaurant(1004L, "Bob Zip", "Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob Zip")
+                .address("Seoul")
+                .build();
         assertThat(restaurant.getName(), is("Bob Zip"));
     }
 }
