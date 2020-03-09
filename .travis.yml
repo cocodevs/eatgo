@@ -1,4 +1,11 @@
-language: java
-branches:
-  only:
-    - master
+{
+  "language": "java",
+  "os": [
+    "linux"
+  ],
+  "branches": {
+    "only": [
+      "master"
+    ]
+  }
+}
