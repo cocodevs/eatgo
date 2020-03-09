@@ -1,11 +1,5 @@
-{
-  "language": "java",
-  "os": [
-    "linux"
-  ],
-  "branches": {
-    "only": [
-      "master"
-    ]
-  }
-}
+language: java
+jdk: oraclejdk8
+
+before_install:
+  - chmod +x mvnw
