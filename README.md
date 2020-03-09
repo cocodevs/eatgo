@@ -1,5 +1,6 @@
 
-<h2>EatGo Project</h2>
+# EatGo Project
+[![Build Status](https://travis-ci.com/cocodevs/eatgo.svg?branch=master)](https://travis-ci.com/cocodevs/eatgo)
 
 - 패스트캠퍼스의 [<Java 웹 개발 마스터>](https://www.fastcampus.co.kr/dev_online_jvweb/) 강의를 따라해보는 프로젝트
 
