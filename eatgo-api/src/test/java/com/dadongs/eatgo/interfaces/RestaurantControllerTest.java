@@ -3,6 +3,8 @@ package com.dadongs.eatgo.interfaces;
 import com.dadongs.eatgo.application.RestaurantService;
 import com.dadongs.eatgo.domain.MenuItem;
 import com.dadongs.eatgo.domain.Restaurant;
+import com.dadongs.eatgo.domain.RestaurantNotFoundException;
+import com.dadongs.eatgo.domain.RestaurantRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,7 @@ class RestaurantControllerTest {
     }
 
     @Test
-    public void detail() throws Exception {
+    public void detailWithExisted() throws Exception {
         Restaurant restaurant1 = Restaurant.builder()
                 .id(1004L)
                 .name("Bob Zip")
@@ -98,7 +100,16 @@ class RestaurantControllerTest {
     }
 
     @Test
-    public void create() throws Exception{
+    public void detailWithNotExisted() throws Exception {
+        given(restaurantService.getRestaurant(404L))
+                .willThrow(new RestaurantNotFoundException(404L));
+        mvc.perform(get("/restaurants/404"))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{}"));
+    }
+
+    @Test
+    public void createWithValidation() throws Exception{
         //Restaurant restaurant = new Restaurant("BeRyong", "Busan");
         mvc.perform(post("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -111,6 +122,13 @@ class RestaurantControllerTest {
         verify(restaurantService).addRestaurant(any()); //아무 객체나 통과
     }
 
+    @Test
+    public void createWithInvalidation() throws Exception{
+        mvc.perform(post("/restaurants")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"\",\"address\":\"\"}"))
+                .andExpect(status().isBadRequest());
+    }
     @Test
     public void update() throws Exception {
         mvc.perform(patch("/restaurants/1")
