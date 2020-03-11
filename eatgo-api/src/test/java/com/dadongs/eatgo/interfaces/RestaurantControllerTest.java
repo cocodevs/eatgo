@@ -1,10 +1,7 @@
 package com.dadongs.eatgo.interfaces;
 
 import com.dadongs.eatgo.application.RestaurantService;
-import com.dadongs.eatgo.domain.MenuItem;
-import com.dadongs.eatgo.domain.Restaurant;
-import com.dadongs.eatgo.domain.RestaurantNotFoundException;
-import com.dadongs.eatgo.domain.RestaurantRepository;
+import com.dadongs.eatgo.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +56,7 @@ class RestaurantControllerTest {
 
     @Test
     public void detailWithExisted() throws Exception {
-        Restaurant restaurant1 = Restaurant.builder()
+        Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .name("Bob Zip")
                 .address("Seoul")
@@ -67,15 +64,16 @@ class RestaurantControllerTest {
         MenuItem menuItem = MenuItem.builder()
                 .name("Kimchi")
                 .build();
-        restaurant1.setMenuItems(Arrays.asList(menuItem));
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
+        restaurant.setMenuItems(Arrays.asList(menuItem));
 
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(2020L)
-                .name("Cyber Food")
-                .address("Seoul")
+        Review review = Review.builder()
+                .name("djkim")
+                .score(4)
+                .description("good")
                 .build();
-        given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+        restaurant.setReviews(Arrays.asList(review));
+
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
@@ -87,16 +85,11 @@ class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
-                ));
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"name\":\"Cyber Food\"")
                 ))
                 .andExpect(content().string(
-                        containsString("\"id\":2020")
+                        containsString("good")
                 ));
+
     }
 
     @Test

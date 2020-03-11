@@ -16,6 +16,7 @@ public class MenuItemController {
 
     @Autowired
     private MenuItemService menuItemService;
+
     @PatchMapping("restaurants/{restaurantId}/menuitems")
     public String bulkUpdate(
             @PathVariable("restaurantId") long restaurantId,
