@@ -10,6 +10,6 @@
 
 - 해당 프로젝트를 통해 패턴 및 기본기를 익힘
 
-- SpringBoot, JPA, H2, DB
+- SpringBoot, JPA, H2 DB
 
 - Node.js, Vue.js
