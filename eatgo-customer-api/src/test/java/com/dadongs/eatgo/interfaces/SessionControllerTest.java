@@ -34,7 +34,31 @@ class SessionControllerTest {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Test
+    public void createWithVaildAttributes() throws Exception {
 
+        Long id = 1004L;
+        String email = "tester@test.com";
+        String password = "test";
+
+        User mockUser = User.builder()
+                .id(id)
+                .email(email)
+                .password(password)
+                .build();
+
+        given(userService.authenticate(email, password)).willReturn(mockUser);
+
+        mvc.perform(post("/session")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"tester@test.com\",\"password\":\"test\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/session"))
+                //.andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"))
+                .andExpect(content().string(containsString(".")));
+
+        verify(userService).authenticate(eq(email), eq(password));
+    }
 
     @Test
     public void createWithNotExistEmail() throws Exception {
