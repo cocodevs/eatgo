@@ -2,6 +2,7 @@ package com.dadongs.eatgo.interfaces;
 
 import com.dadongs.eatgo.application.UserService;
 import com.dadongs.eatgo.domain.User;
+import com.dadongs.eatgo.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,17 +16,22 @@ import java.net.URISyntaxException;
 public class SessionController {
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     private UserService userService;
 
     @PostMapping("/session")
     public ResponseEntity<SessionResponseDto> create(
             @RequestBody SessionRequestDto resource
     ) throws URISyntaxException {
+        Long id = 1004L;
         String email = resource.getEmail();
         String password = resource.getPassword();
 
         User user = userService.authenticate(email, password);
-        String accessToken = user.getAccessToken();
+
+        String accessToken = jwtUtil.createToken(user.getId(), user.getName());
 
         String url = "/session";
 
