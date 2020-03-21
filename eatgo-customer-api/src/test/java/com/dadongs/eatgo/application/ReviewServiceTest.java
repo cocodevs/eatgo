@@ -31,7 +31,7 @@ class ReviewServiceTest {
                 .score(4)
                 .description("good")
                 .build();
-        reviewService.addReview(1L, review);
+        reviewService.addReview(1L, "djkim", 4, "good");
 
         verify(reviewRepository).save(any());
     }
