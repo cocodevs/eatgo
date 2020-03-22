@@ -33,13 +33,13 @@ class ReviewControllerTest {
 
     @Test
     public void createWithValidAttributes() throws Exception {
-        given(reviewService.addReview(1L, "John", 4, "tastes good")).willReturn(
+        given(reviewService.addReview(1L, "cocodev", 4, "tastes good")).willReturn(
                 Review.builder()
                 .id(123L)
                 .build()
         );
 
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJjb2NvZGV2In0.g7BJHpONXgWRe-YCBurhTLvB_hG30V45I1Z9TW8qhxs";
 
         mvc.perform(post("/restaurants/1/reviews")
                 .header("Authorization", "Bearer " + token)
@@ -48,7 +48,7 @@ class ReviewControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/restaurants/1/reviews/123"));
 
-        verify(reviewService).addReview(eq(1L), eq("John"), eq(4), eq("tastes good"));
+        verify(reviewService).addReview(eq(1L), eq("cocodev"), eq(4), eq("tastes good"));
     }
 
     @Test
