@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 
 class JwtUtilTest {
 
-    private static final String SECRET = "12345678901234567890123456789012";
+    private static final String SECRET = "abcdefghijklnmopqrstuvwxyz123456";
     
     private JwtUtil jwtUtil;
     
@@ -22,18 +22,18 @@ class JwtUtilTest {
     @Test
     public void createToken() {        
         
-        String token = jwtUtil.createToken(1004L, "John");
-
+        String token = jwtUtil.createToken(1L, "cocodev", null);
+        System.out.println("token : " + token);
         assertThat(token, containsString("."));
     }
     
     @Test
     public void getClaims() {
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsIm5hbWUiOiJKb2huIn0.8hm6ZOJykSINHxL-rf0yV882fApL3hyQ9-WGlJUyo2A";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsIm5hbWUiOiJjb2NvZGV2In0.g7BJHpONXgWRe-YCBurhTLvB_hG30V45I1Z9TW8qhxs";
 
         Claims claims = jwtUtil.getClaims(token);
 
-        assertThat(claims.get("userId", Long.class), is(1004L));
-        assertThat(claims.get("name"), is("John"));
+        assertThat(claims.get("userId", Long.class), is(1L));
+        assertThat(claims.get("name"), is("cocodev"));
     }
 }

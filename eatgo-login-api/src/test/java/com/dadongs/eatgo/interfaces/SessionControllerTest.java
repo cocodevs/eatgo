@@ -18,6 +18,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -45,6 +46,7 @@ class SessionControllerTest {
                 .id(id)
                 .email(email)
                 .password(password)
+                .level(1L)
                 .build();
 
         given(userService.authenticate(email, password)).willReturn(mockUser);
@@ -56,6 +58,41 @@ class SessionControllerTest {
                 .andExpect(header().string("location", "/session"))
                 //.andExpect(content().string("{\"accessToken\":\"header.payload.signature\"}"))
                 .andExpect(content().string(containsString(".")));
+
+        verify(userService).authenticate(eq(email), eq(password));
+    }
+
+    @Test
+    public void createRestaurantOwner() throws Exception {
+
+        Long id = 1004L;
+        String email = "tester@test.com";
+        String name = "tester";
+        String password = "test";
+
+        User mockUser = User.builder()
+                .id(id)
+                .name(name)
+                .email(email)
+                .password(password)
+                .restaurantId(555L)
+                .level(50L)
+                .build();
+
+        given(userService.authenticate(email, password)).willReturn(mockUser);
+
+        String mockToken = "header.payload.signature";
+        //given(jwtUtil.createToken(id, name, 555L)).willReturn(mockToken);
+        //when(jwtUtil.createToken(id, name, 555L)).thenReturn(mockToken);
+
+        mvc.perform(post("/session")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"email\":\"tester@test.com\",\"password\":\"test\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", "/session"))
+                /*.andExpect(content().string(
+                        containsString("{\"accessToken\":\"header.payload.signature\"}")
+                ))*/;
 
         verify(userService).authenticate(eq(email), eq(password));
     }
