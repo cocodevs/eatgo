@@ -19,6 +19,8 @@ public class Reservation {
     @GeneratedValue
     private Long id;
 
+    private Long restaurantId;
+
     private Long userId;
 
     private String name;
@@ -31,6 +33,7 @@ public class Reservation {
     @NotEmpty
     private String time;
 
+    @Setter
     @NotNull
     private Integer partySize;
 }
