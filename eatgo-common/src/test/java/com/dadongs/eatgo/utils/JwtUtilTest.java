@@ -25,6 +25,10 @@ class JwtUtilTest {
         String token = jwtUtil.createToken(1L, "cocodev", null);
         System.out.println("token : " + token);
         assertThat(token, containsString("."));
+
+        String token2 = jwtUtil.createToken(1L, "cocodev", 1004L);
+        System.out.println("token : " + token2);
+        assertThat(token2, containsString("."));
     }
     
     @Test
